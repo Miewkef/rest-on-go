@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TESTAPIServer_handleHello(t *testing.T) {
+func TestAPIServer_handleHello(t *testing.T) {
 	s := New(NewConfig())
 	recorder := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodGet, "/hello", nil)
