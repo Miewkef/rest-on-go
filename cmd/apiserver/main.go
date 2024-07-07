@@ -1,13 +1,32 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"rest-api/internal/app/apiserver"
+
+	"github.com/BurntSushi/toml"
 )
 
+var (
+	configPath string
+)
+
+func init() {
+	flag.StringVar(&configPath, "config-path", "configs/apserver.toml", "path to config file")
+}
+
 func main() {
-	server := apiserver.New()
+	flag.Parse()
+
+	config := apiserver.NewConfig()
+	_, err := toml.DecodeFile(config.BindAddr, config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := apiserver.New(config)
 	if err := server.Start(); err != nil {
 		log.Fatal(err)
-	} 
+	}
 }
